@@ -1,0 +1,27 @@
+{% from "bootstrap5/form.html" import render_form %}
+{% from "bootstrap5/utils.html" import render_messages %}
+{% extends 'base.html' %}
+
+{% block title %}Explore new Places{% endblock %}
+
+{% block content %}
+<div class="text-center mt-5">
+    <img src="{{ profile_image_url }}" alt="profile image" class="rounded-circle profile-image">
+    <h1>{{ current_user.email }}</h1>
+    <div class="container mt-5">
+        {{ render_messages() }}
+    </div>
+</div>
+<div class="container my-5">
+    <hr>
+</div>
+<div class="container">
+    {{ render_form(profile_form, novalidate=True, button_style='btn btn-warning') }}
+</div>
+<div class="container my-5">
+    <hr>
+</div>
+<div class="container">
+    {{ render_form(password_form, novalidate=True, button_style='btn btn-warning') }}
+</div>
+{% endblock %}

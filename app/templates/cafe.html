@@ -1,0 +1,162 @@
+{% from "bootstrap5/form.html" import render_form %}
+{% extends 'base.html' %}
+
+{% block title %}{{ cafe.name }}{% endblock %}
+
+{% block content %}
+<div class="modal fade" id="rating-model" tabindex="-1" aria-labelledby="ratingModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="ratingModalLabel">Rate this Cafe</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <form id="ratingForm" method="POST" action="{{ url_for('rate_cafe', cafe_id=cafe.id) }}">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-6 text-end">
+                            <fieldset class="rating">
+                                <input type="radio" id="star5" name="rating" value="5"/>
+                                <label class="full" for="star5" title="5 stars"></label>
+                                <input type="radio" id="star4" name="rating" value="4"/>
+                                <label class="full" for="star4" title="4 stars"></label>
+                                <input type="radio" id="star3" name="rating" value="3"/>
+                                <label class="full" for="star3" title="3 stars"></label>
+                                <input type="radio" id="star2" name="rating" value="2"/>
+                                <label class="full" for="star2" title="2 stars"></label>
+                                <input type="radio" id="star1" name="rating" value="1"/>
+                                <label class="full" for="star1" title="1 star"></label>
+                            </fieldset>
+                        </div>
+                        <div class="col-6 text-start">
+                            <button type="submit" class="btn btn-warning mt-3">Submit Rating</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+<div class="container my-5">
+    <div class="p-5 text-center bg-body-tertiary rounded-3 cafe-jumbotron position-relative"
+         style="background-image: url('{{ cafe.img_url }}'); background-size: cover; background-position: center;">
+        <h1 class="text-body-emphasis">{{ cafe.name }}</h1>
+        <p class="col-lg-8 mx-auto fs-5 text-muted">{{ cafe.location }}</p>
+        <form id="favouriteForm" method="POST" action="{{ url_for('toggle_favourite', cafe_id=cafe.id, **request.args) }}">
+            <input type="checkbox" id="favourite-btn" name="favourite" class="btn-check" onchange="this.form.submit()"
+                {% if is_favourite_cafe %}checked{% endif %}>
+            <label for="favourite-btn"
+                   class="btn btn-outline-danger position-absolute bottom-0 start-0 favourite-label">
+                <img src="{{ url_for('static', filename='images/favourite.png') }}" alt="favourite">
+            </label>
+        </form>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-3">
+            {% if cafe.average_rating %}
+            <h3 class="cafe-rating">
+                {{ cafe.average_rating }}
+                {% for num in range(1, 6) %}
+                {% if cafe.average_rating >= num %}
+                <img src="{{ url_for('static', filename='images/star-yellow.png') }}" alt="star">
+                {% elif cafe.average_rating < num and cafe.average_rating > num-1 %}
+                <img src="{{ url_for('static', filename='images/star-half.png') }}" alt="star">
+                {% else %}
+                <img src="{{ url_for('static', filename='images/star-gray.png') }}" alt="star">
+                {% endif %}
+                {% endfor %}
+            </h3>
+            {% else %}
+            <h5>No ratings yet</h5>
+            {% endif %}
+            <button type="button" class="btn btn-warning my-2" data-bs-toggle="modal" data-bs-target="#rating-model">
+                Rate this Cafe
+            </button>
+        </div>
+        <div class="col-1">
+            <a href="{{ cafe.map_url }}" target="_blank">
+                <img src="{{ url_for('static', filename='images/map.png') }}" alt="map">
+            </a>
+        </div>
+
+        <div class="col-4">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-between">
+                    Seats:
+                    <span>{{ cafe.seats }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                    Coffee price:
+                    <span>{{ cafe.coffee_price }}</span>
+                </li>
+            </ul>
+        </div>
+        <div class="col-4">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-between">
+                    Wi-Fi:
+                    <span>{{ cafe.has_wifi }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                    Sockets:
+                    <span>{{ cafe.has_sockets }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                    Toilet:
+                    <span>{{ cafe.has_toilet }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                    Can take calls:
+                    <span>{{ cafe.can_take_calls }}</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-8">
+            <div class="comment">
+                <ul class="commentList">
+                    <hr class="comment-divider-top">
+                    {% for comment in cafe['comments'] %}
+                    <li>
+                        <div class="commenterImage">
+                            <img src="{{ comment.user.avatar_url}}" alt="user avatar">
+                        </div>
+                        <div class="commentText">
+                            <p>{{ comment.text|safe }}</p>
+                            <span class="comment-user">
+                                {% if comment.user.name %}
+                                    {{ comment.user.name }}
+                                {% else %}
+                                    {{ comment.user.email.split('@')[0] }}
+                                {% endif %}
+                            </span>
+                        </div>
+                    </li>
+                    <hr class="comment-divider">
+                    {% endfor %}
+                </ul>
+            </div>
+            {{ ckeditor.load() }}
+            {{ ckeditor.config(name='comment') }}
+            {{ render_form(comment_form, novalidate=True, button_style='btn btn-warning') }}
+        </div>
+        <div class="col-4 text-center cafe-buttons">
+            <hr>
+            {% if current_user.is_authenticated %}
+                {% if current_user.is_admin() %}
+                <a href="{{ url_for('edit_cafe', cafe_id=cafe.id) }}" class="btn btn-warning back-explore-button">Edit Cafe</a>
+                <a href="{{ url_for('delete_cafe', cafe_id=cafe.id) }}" class="btn btn-warning back-explore-button">Delete Cafe</a>
+                {% endif %}
+            {% endif %}
+            <a href="{{ url_for('explore', **request.args) }}" class="btn btn-warning back-explore-button">Back to Explore</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

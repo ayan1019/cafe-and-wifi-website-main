@@ -1,0 +1,244 @@
+.social_media_icon{
+    color: grey;
+    margin-right: 10px;
+}
+
+.explore_header_link{
+    margin-left: 10px;
+}
+
+.feature_image{
+    background-size: cover;
+}
+
+.flip-card {
+            perspective: 1000px;
+            height: 290px;
+            width: 350px;
+            margin: 20px 0;
+}
+
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+}
+
+.flip-card-front {
+    text-align: center;
+    background-color: #f8f9fa;
+    color: #000;
+}
+
+.flip-card-back {
+    text-align: left;
+    color: #000;
+    transform: rotateY(180deg);
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+.flip-card-back-text {
+    padding-top: 13px;
+    padding-bottom: 13px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.btn-check:checked + .btn-outline-dark {
+    background-color: #ffc107;
+    color: #000;
+}
+
+.page-link {
+    color: #000;
+}
+
+.page-link:hover {
+    color: #ffc107;
+}
+
+.page-link:focus {
+    background-color: #ffc107;
+    color: #000;
+    box-shadow: 0 0 0 0rem
+}
+
+.pagination .page-item.active .page-link{
+    background-color: #ffc107;
+    border-color: #000;
+    color: #000;
+}
+
+.top-of-page {
+    padding-top: 80px;
+}
+
+.cafe-jumbotron {
+    position: relative;
+}
+
+.cafe-jumbotron::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: inherit;
+}
+
+.cafe-jumbotron h1,
+.cafe-jumbotron p {
+    color: #ffffff !important;
+    position: relative;
+    z-index: 1;
+}
+
+.cafe-rating {
+    display: flex;
+    align-items: center;
+}
+
+.cafe-rating img {
+    margin-left: 3px;
+}
+
+.cafe-rating img:first-child {
+    margin-left: 15px;
+}
+
+.cafe-rating-card {
+    display: flex;
+    align-items: center;
+}
+
+.cafe-rating-card img {
+    margin-left: 3px;
+}
+
+.cafe-rating-card img:first-child {
+    margin-left: 15px;
+}
+
+.rating {
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    direction: rtl;
+}
+
+.rating input {
+    display: none;
+}
+
+.rating label {
+    cursor: pointer;
+}
+
+.rating label:before {
+    content: '\2605';
+    font-size: 36px;
+    color: #ccc;
+    display: inline-block;
+}
+
+.rating label:hover:before,
+.rating label:hover ~ label:before,
+.rating input:checked ~ label:before {
+    color: #ffc107;
+}
+
+.favourite-label {
+    border: none;
+}
+
+.btn-check:checked + .btn-outline-danger {
+    background-color: #ffc107;
+}
+
+.comment {
+  padding-top: 10px;
+}
+.commentList {
+  padding:0;
+  list-style:none;
+  max-height:500px;
+  overflow:auto;
+}
+.commentList li {
+  margin:0;
+  margin-top:10px;
+}
+.commentList li > div {
+  display:table-cell;
+}
+.commenterImage {
+  width:30px;
+  margin-right:20px;
+  height:100%;
+  float:left;
+}
+.commenterImage img {
+  width:100%;
+  border-radius:50%;
+}
+.commentText p {
+  margin:0;
+}
+
+.comment-user {
+  color:#aaa;
+  font-family:verdana;
+  font-size:13px;
+}
+
+.form-label {
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.comment-divider {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    margin-right: 5px;
+}
+
+.comment-divider-top {
+    margin-bottom: 40px;
+    margin-right: 5px;
+}
+
+.back-explore-button {
+    margin-top: 20px;
+}
+
+.cafe-search-label {
+    margin-right: 10px;
+}
+
+.profile-image {
+    margin-bottom: 10px;
+}
+
+.cafe-buttons a {
+    margin: 5px;
+}

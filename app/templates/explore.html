@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+
+{% block title %}Explore new Places{% endblock %}
+
+{% block content %}
+<div class="container-fluid my-2">
+    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#filter-model">Filter & Sort
+    </button>
+</div>
+<div class="modal fade" id="filter-model" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="filterModalLabel">Filter & Sort</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ url_for('explore') }}" method="GET">
+                <div class="modal-body">
+
+                    <div class="container text-center">
+                        <label for="filter_group">Filter: </label>
+                        <div class="btn-group" role="group" aria-label="filters" id="filter_group">
+                            {% if current_user.is_authenticated %}
+                            <input type="checkbox" class="btn-check" name="favourite" id="favourite-check"
+                                   autocomplete="off"
+                                   {% if request.args.get('favourite') == 'on' %}checked{% endif %}>
+                            <label class="btn btn-outline-dark" for="favourite-check">Favourites</label>
+                            {% endif %}
+                            <input type="checkbox" class="btn-check" name="has_wifi" id="wifi_check" autocomplete="off"
+                                   {% if request.args.get('has_wifi') == 'on' %}checked{% endif %}>
+                            <label class="btn btn-outline-dark" for="wifi_check">Wi-Fi</label>
+                            <input type="checkbox" class="btn-check" name="has_sockets" id="socket_check"
+                                   autocomplete="off"
+                                   {% if request.args.get('has_sockets') == 'on' %}checked{% endif %}>
+                            <label class="btn btn-outline-dark" for="socket_check">Sockets</label>
+                            <input type="checkbox" class="btn-check" name="has_toilet" id="toilet_check"
+                                   autocomplete="off"
+                                   {% if request.args.get('has_toilet') == 'on' %}checked{% endif %}>
+                            <label class="btn btn-outline-dark" for="toilet_check">Toilet</label>
+                            <input type="checkbox" class="btn-check" name="can_take_calls" id="calls_check"
+                                   autocomplete="off"
+                                   {% if request.args.get('can_take_calls') == 'on' %}checked{% endif %}>
+                            <label class="btn btn-outline-dark" for="calls_check">Takes Calls</label>
+                        </div>
+                        <div class="my-3"></div>
+                        <hr class="my-3">
+                        <label for="sort_group">Sort By: </label>
+                        <div class="btn-group" role="group" aria-label="sort by" id="sort_group">
+                            <input type="radio" class="btn-check" name="sort_by" id="name_radio" value="name"
+                                   autocomplete="off"
+                                   {% if request.args.get('sort_by') == 'name' %}checked{% endif %}>
+                            <label class="btn btn-outline-dark" for="name_radio">Name</label>
+
+                            <input type="radio" class="btn-check" name="sort_by" id="rating_radio"
+                                   value="average_rating" autocomplete="off"
+                                   {% if request.args.get('sort_by') == 'average_rating' %}checked{% endif %}>
+                            <label class="btn btn-outline-dark" for="rating_radio">Rating</label>
+
+                            <input type="radio" class="btn-check" name="sort_by" id="location_radio" value="location"
+                                   autocomplete="off"
+                                   {% if request.args.get('sort_by') == 'location' %}checked{% endif %}>
+                            <label class="btn btn-outline-dark" for="location_radio">Location</label>
+
+                            <input type="radio" class="btn-check" name="sort_by" id="coffe_price_radio"
+                                   value="coffee_price" autocomplete="off"
+                                   {% if request.args.get('sort_by') == 'coffee_price' %}checked{% endif %}>
+                            <label class="btn btn-outline-dark" for="coffe_price_radio">Coffee Price</label>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <a href="{{ url_for('explore') }}" type="button" class="btn btn-secondary">Clear Filters</a>
+                    <button type="submit" class="btn btn-warning">Apply Filters</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="row px-4 py-3">
+    {% for cafe in cafes %}
+    <div class="col-12 col-md-6 col-lg-4 col-xxl-3 mb-4 px-4">
+        <div class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">
+                    <div class="card">
+                        <img src="{{ cafe.img_url }}"
+                             class="card-img-top" alt="Cafe Image">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ cafe.name }}</h5>
+                            <p class="card-text">{{ cafe.location }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flip-card-back">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="text-center d-flex justify-content-center">
+                                {% if cafe.average_rating %}
+                                <h4 class="cafe-rating-card">
+                                    {{ cafe.average_rating }}
+                                    {% for num in range(1, 6) %}
+                                    {% if cafe.average_rating >= num %}
+                                    <img src="{{ url_for('static', filename='images/star-yellow-card.png') }}"
+                                         alt="star">
+                                    {% elif cafe.average_rating < num and cafe.average_rating > num-1 %}
+                                    <img src="{{ url_for('static', filename='images/star-half-card.png') }}" alt="star">
+                                    {% else %}
+                                    <img src="{{ url_for('static', filename='images/star-gray-card.png') }}" alt="star">
+                                    {% endif %}
+                                    {% endfor %}
+                                </h4>
+                                {% else %}
+                                <h5 class="card-title">No ratings yet</h5>
+                                {% endif %}
+                            </div>
+                            <ul class="list-group list-group-flush flip-card-back-text">
+                                <li class="list-group-item d-flex justify-content-between">
+                                    Wi-Fi:
+                                    <span>{{ cafe.has_wifi }}</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    Sockets:
+                                    <span>{{ cafe.has_sockets }}</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    Toilet:
+                                    <span>{{ cafe.has_toilet }}</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    Can take calls:
+                                    <span>{{ cafe.can_take_calls }}</span>
+                                </li>
+                            </ul>
+                            <div class="text-center">
+                                <a href="{{ url_for('view_cafe', cafe_id=cafe.id, **request.args) }}" class="btn btn-warning">View</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<div class="d-flex justify-content-center">
+    <nav aria-label="cafe navigation">
+        <ul class="pagination">
+            {% set args_without_page = request.args.copy() %}
+            {% set _ = args_without_page.pop('page', None) %}
+            {% if pagination.has_prev %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('explore', page=pagination.prev_num, **args_without_page) }}"
+                   aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            {% endif %}
+            {% for page_number in pagination.iter_pages() %}
+            <li class="page-item {% if page_number == pagination.page %}active{% endif %}">
+                <a class="page-link" href="{{ url_for('explore', page=page_number, **args_without_page) }}">{{
+                    page_number }}</a>
+            </li>
+            {% endfor %}
+            {% if pagination.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('explore', page=pagination.next_num, **args_without_page) }}"
+                   aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+{% endblock %}

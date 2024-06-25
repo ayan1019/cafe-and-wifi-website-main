@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}Cafe & Wifi{% endblock %}
+
+{% block content %}
+<div class="px-4 py-5 my-5 text-center">
+    <img class="d-block mx-auto mb-4" src="{{ url_for('static', filename='images/hero_logo.png') }}" alt="logo">
+    <h1 class="display-5 fw-bold text-body-emphasis">Coffee & Wi-Fi</h1>
+    <div class="col-lg-6 mx-auto">
+      <p class="lead mb-4">Discover the best local hot spots where you can enjoy a coffee, work and connect in comfort.</p>
+      <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+        <a href="{{ url_for('explore') }}" class="btn btn-warning btn-lg px-4 gap-3">Explore</a>
+      </div>
+    </div>
+  </div>
+<div class="container px-4 py-5" id="custom-cards">
+    <h2 class="pb-2 border-bottom"></h2>
+
+    <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
+      <div class="col">
+        <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg feature_image" style="background-image: url('{{ url_for('static', filename='images/feature_1.jpg') }}');">
+          <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
+            <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Be productive and comfortable</h3>
+            <ul class="d-flex list-unstyled mt-auto">
+              <li class="me-auto">
+                <img src="{{ url_for('static', filename='images/feature_logo.png') }}" alt="feature logo">              </li>
+              <li class="d-flex align-items-center me-3">
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg feature_image" style="background-image: url('{{ url_for('static', filename='images/feature_2.jpg') }}');">
+          <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
+            <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Discover new local places</h3>
+            <ul class="d-flex list-unstyled mt-auto">
+              <li class="me-auto">
+                <img src="{{ url_for('static', filename='images/feature_logo.png') }}" alt="feature logo">
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg feature_image" style="background-image: url('{{ url_for('static', filename='images/feature_3.jpg') }}');">
+          <div class="d-flex flex-column h-100 p-5 pb-3 text-shadow-1">
+            <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Organise caffeinated group meetings</h3>
+            <ul class="d-flex list-unstyled mt-auto">
+              <li class="me-auto">
+                <img src="{{ url_for('static', filename='images/feature_logo.png') }}" alt="feature logo">
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
